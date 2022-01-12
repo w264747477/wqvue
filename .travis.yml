@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - '12'
+services:
+  - docker
+branches:
+  only:
+    - master
+
+before_install:
+  - npm install
+
+script:
+  - npm run build
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t wqvue/wqvue-test:latest .
+  - docker push wqvue/wqvue-test:latest
